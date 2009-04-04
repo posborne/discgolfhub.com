@@ -1,0 +1,57 @@
+/* The Reset ---------------------------------- */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,
+h6,pre,form,fieldset,input,p,blockquote,table,
+th,td { margin: 0; padding: 0; }
+fieldset,img,abbr { border: 0; }
+address,caption,cite,code,dfn,em,h1,h2,h3,
+h4,h5,h6,th,var { font-style: normal; font-weight: normal; }
+caption, th { text-align: left; }
+q:before,q:after { content: ''; }
+a { text-decoration: none; }
+/* -------------------------------------------- */
+
+h2, h3, h4, h5, h6 {
+	font-family: "Trebuchet MS", arial, sans-serif;
+	font-stretch: normal;
+	font-variant: normal;
+	font-weight: bold;
+}
+
+code { font-family: Consolas, Monaco, "Courier New", Courier, monospace; }
+
+input[type=button], input[type=submit] {
+	font: normal 11px/16px "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+	text-decoration: none;
+	padding: 2px 8px !important;
+	cursor: pointer;
+	border: 1px solid #bbb;
+	-moz-border-radius: 11px;
+	-khtml-border-radius: 11px;
+	-webkit-border-radius: 11px;
+	border-radius: 11px;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	-khtml-box-sizing: content-box;
+	box-sizing: content-box;
+	color: #464646;
+	text-shadow: rgba(255,255,255,1) 0 1px 0;
+}
+
+input[type=button]:hover, input[type=submit]:hover {
+	color: #000;
+	border-color: #666;
+}
+
+input[type=button], input[type=submit] {
+	background: #f2f2f2;
+}
+
+input[type=button]:active, input[type=submit]:active {
+	background: #eee;
+}
+
+body, html {
+	color:#555555;
+	font-family:"Lucida Grande",Verdana,"Bitstream Vera Sans",Arial,sans-serif;
+	line-height:22px;
+}

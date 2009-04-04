@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Disc Golf Hub{% endblock %}
+{% block pagebar %}
+<h2>Welcome to the Disc Golf Hub</h2>
+{% endblock %}
+
+{% block content %}
+<div style="float: left; width: 320px;">
+  <h3>Welcome</h3>
+  <p>Welcome.  Disc Golf Hub is the place for disc golfers across
+    the world to find, rate, and comment on over 3000 courses, keep track
+    of scores, and communicate with other lovers of the game.</p>
+  
+  <h3>Get Started</h3>
+  <p>Getting started is easy.  We use Facebook Connect for authentication
+    so you don't need to create another account to participate in the
+    community.  Just click on the connect near the top of your screen</p>
+</div>
+<div id=mapcontainer style="float: right">
+  <form style="text-align: center; padding-bottom: 10px;">
+    <label for="zip" style="font-size: .9em; font-weight: bold">Zip or City:</label>
+    <input type="text" id="zip" name="zip" size="12" style="font-size: .9em" />
+    <input type="button" id="zipclick" value="Go" style="font-size: .9em"
+	   onclick="parseInt(zoomAndCenter(document.getElementById('zip').value))" />
+  </form>
+  <div id="map" style="width: 600px; height: 600px"></div>
+</div>
+{% endblock %}

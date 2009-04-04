@@ -1,0 +1,24 @@
+application: discgolfhub
+version: beta01
+runtime: python
+api_version: 1
+
+handlers:
+- url: /images
+  static_dir: images
+
+- url: /stylesheets
+  static_dir: stylesheets
+  
+- url: /connect
+  static_dir: connect
+  
+- url: /javascript
+  static_dir: javascript
+  
+- url: /load
+  script: dataloader.py
+  login: admin
+
+- url: /.*
+  script: discgolfhub.py

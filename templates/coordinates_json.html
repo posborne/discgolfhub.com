@@ -1,0 +1,4 @@
+{"coordinates":[
+{% for coord in coordinates %}
+{"name":"{{ coord.name }}","lat":{{ coord.lat }},"lon":{{ coord.lon }},"numholes":{{ coord.numholes }},"id":{{ coord.id }}},
+{% endfor %}] }

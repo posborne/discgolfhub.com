@@ -1,0 +1,51 @@
+body {
+	background: #eee;
+}
+
+p {
+	font-size: 87%;
+	margin-bottom: 1.4em;
+}
+
+.wrapper {
+	width: 960px; /* Same as fb... must work for people */
+	margin: 0 auto;
+}
+
+#content {
+	margin: 0 auto;
+	padding: 15px;
+	width: 930px; /* 960 - 30 */
+	background-color: #fff;
+}
+
+div#pagebar {
+	background: #eee;
+	padding: 15px;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-topright: 5px;
+}
+
+div#header {
+	background: #ddd;
+	text-align: left;
+	padding: 0px;
+	padding-top: 25px;
+	margin-bottom: 0px;
+}
+
+#site_title {
+	color:#333;
+	font-weight: normal;
+	font-family:Georgia,Times, "Times New Roman", serif;
+	font-size:22px;
+	font-style:italic;
+	line-height:1em;
+	padding-bottom: 12px;
+	padding-left: 15px;
+	text-shadow:0 1px 0 #E4F2FD;
+}
+
+#login {
+	font-size: 85%;
+}

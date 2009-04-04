@@ -1,0 +1,7 @@
+# List of things we don't want in our repo
+syntax: glob
+
+*~
+*.pyc
+*.tmp
+*.bak
