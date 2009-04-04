@@ -1,6 +1,5 @@
 import cgi
 import os
-import Geohash
 
 from google.appengine.api import users
 from google.appengine.ext import webapp
