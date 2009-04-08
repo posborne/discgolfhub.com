@@ -55,6 +55,27 @@ class GPSCoords(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'templates/coordinates_json.html')
         self.response.out.write(template.render(path, template_values))
         
+class GetCourses(webapp.RequestHandler):
+    """
+    Get a CSV list of all the courses current in the database.
+    """
+    def get(self):
+        page = int(cgi.escape(self.request.get('page')))
+
+        query = db.Query(CourseLocation)
+        query.filter('courseId >', (page - 1) * 500 - 1)
+        query.filter('courseId <', page * 500)
+        results = query.fetch(limit=1000);
+
+        courses = []
+        for courseLocation in results:
+            courses.append({'id': courseLocation.courseId})
+
+        template_values = {'courses': courses,}
+        path = os.path.join(os.path.dirname(__file__), 'templates/courses_csv.html')
+        self.response.out.write(template.render(path, template_values))
+
+
 class XDReceiver(webapp.RequestHandler):
     """
     xd_receiver.htm is a required file for working with Facebook connect.
@@ -75,7 +96,8 @@ class ConnectTest(webapp.RequestHandler):
         
 # Routes for WSGI application
 application = webapp.WSGIApplication([('/', MainPage),
-                                      ('/getpoints/', GPSCoords),],
+                                      ('/getpoints/', GPSCoords),
+                                      ('/getcourses/', GetCourses)],
                                      debug=True)
 
 # We use main because GAE will optimize based on this

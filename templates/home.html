@@ -16,7 +16,6 @@
   <p>Getting started is easy.  We use Facebook Connect for authentication
     so you don't need to create another account to participate in the
     community.  Just click on the connect near the top of your screen</p>
-
 </div>
 <div id=mapcontainer style="float: right">
   <form style="text-align: center; padding-bottom: 10px;">
@@ -26,18 +25,16 @@
 	   onclick="parseInt(zoomAndCenter(document.getElementById('zip').value))" />
   </form>
   <div id="map" style="width: 600px; height: 600px"></div>
-  <div style="clear:both; margin-bottom: 15px"></div>
-  <div>
+</div>
+<div style="clear:both"></div>
+<div>
   <h3>What do you think?</h3>
   <p>So, what do you think?  Development is active and your input is
-  more than welcome!</p>
+    more than welcome!  In order to comment you must login (using
+    Facebook connect) at the top of the page.  Be sure to uncheck
+    posting to your facebook profile unless you want to share your love!</p>
   <fb:comments numposts="4" title="discgolfhub.com beta"
                simple="1"></fb:comments>
 </div>
-
-
-</div>
-
-
 
 {% endblock %}
