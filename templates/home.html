@@ -6,28 +6,19 @@
 {% endblock %}
 
 {% block content %}
-<div style="float: left; width: 320px;">
+<div style="float: left; width: 400px;">
   <h3>Welcome</h3>
   <p>Welcome.  Disc Golf Hub is the place for disc golfers across
     the world to find, rate, and comment on over 3000 courses, keep track
     of scores, and communicate with other lovers of the game.</p>
-  
   <h3>Get Started</h3>
   <p>Getting started is easy.  We use Facebook Connect for authentication
     so you don't need to create another account to participate in the
-    community.  Just click on the connect near the top of your screen</p>
-</div>
-<div id=mapcontainer style="float: right">
-  <form style="text-align: center; padding-bottom: 10px;">
-    <label for="zip" style="font-size: .9em; font-weight: bold">Zip or City:</label>
-    <input type="text" id="zip" name="zip" size="12" style="font-size: .9em" />
-    <input type="button" id="zipclick" value="Go" style="font-size: .9em"
-	   onclick="parseInt(zoomAndCenter(document.getElementById('zip').value))" />
-  </form>
-  <div id="map" style="width: 600px; height: 600px"></div>
-</div>
-<div style="clear:both"></div>
-<div>
+    community.  Just click on the connect near the top of your
+    screen</p>
+  <h3>Find Courses</h3>
+  <p>Visit the <a href="courselocator/">Course Locator</a> to find
+  courses near you, wherever you are.</p>
   <h3>What do you think?</h3>
   <p>So, what do you think?  Development is active and your input is
     more than welcome!  In order to comment you must login (using

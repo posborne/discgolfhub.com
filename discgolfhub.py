@@ -75,6 +75,13 @@ class GetCourses(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'templates/courses_csv.html')
         self.response.out.write(template.render(path, template_values))
 
+class CourseLocator(webapp.RequestHandler):
+    """
+    Render the course locator page.
+    """
+    def get(self):
+        path = os.path.join(os.path.dirname(__file__), 'templates/courselocations.html')
+        self.response.out.write(template.render(path, None))
 
 class XDReceiver(webapp.RequestHandler):
     """
@@ -93,11 +100,16 @@ class ConnectTest(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'templates/connect/test.htm')
         self.response.out.write(template.render(path, None))
 
+class RedirectHome(webapp.RequestHandler):
+    def get(self):
+        self.redirect("/home")
         
 # Routes for WSGI application
-application = webapp.WSGIApplication([('/', MainPage),
+application = webapp.WSGIApplication([('/', RedirectHome),
+                                      ('/home', MainPage),
                                       ('/getpoints/', GPSCoords),
-                                      ('/getcourses/', GetCourses)],
+                                      ('/getcourses/', GetCourses),
+                                      ('/courselocator/', CourseLocator),],
                                      debug=True)
 
 # We use main because GAE will optimize based on this

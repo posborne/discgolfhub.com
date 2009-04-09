@@ -1,3 +1,5 @@
+import re
+
 states = ["Alabama",
           "Alaska",
           "Arizona",
@@ -54,30 +56,143 @@ class PDGABot:
     and harvests bits of metadata about the course, storing it
     to a central data location
     """
-    def harvestSite(self):
+    def harvestCourseIds(self):
         import urllib
         import csv
         from xml.dom import minidom
-        import Geohash
-        csvWriter = csv.writer(open('/tmp/courseloc.csv', 'w'))
-        baseUrl = 'http://referential-integrity.com/DiscGolfCourseGmap/xml/mapXml/'
+        csvWriter = csv.writer(open('./courses.csv', 'w'))
+        # Unfortunately referential-integrity tanked
+        # baseUrl = 'http://referential-integrity.com/DiscGolfCourseGmap/xml/mapXml/'
+        baseUrl = 'http://www.pdga.com/courses-by-state'
+        coursesPerPage = 40
+        courses = []
         for state in states:
-            url = baseUrl + state + '.xml'
-            print "Importing " + state
-            xmldoc = minidom.parseString(urllib.urlopen(url).read())
-            courses = xmldoc.getElementsByTagName('course')
-            for course in courses:
-                courseName = course.attributes['name'].value
-                numberHoles = int(course.attributes['numholes'].value)
-                courseId = int(course.attributes['id'].value)
-                latitude = float(course.attributes['lat'].value)
-                longitude = float(course.attributes['lon'].value)
-                csvWriter.writerow([latitude,
-                                    longitude,
-                                    courseName,
-                                    numberHoles,
-                                    courseId,])
+            page = 0
+            coursesOnPage = 1
+            while coursesOnPage > 0:
+                url = baseUrl + '?pageNum_Courses=' + str(page) + '&SearchState=' + state
+                resultpage = urllib.urlopen(url).read()
+                results = re.findall('[?]id=(\d+)', resultpage)
+                for item in results:
+                    courses.append(item)
+                coursesOnPage = len(results)
+                page += 1
+            print 'Courses after ' + state + ': ' + str(len(courses))
+        csvWriter.writerow(courses)
 
+    def downloadCoursePages(self):
+        import urllib
+        import csv
+        import os
+        idreader = csv.reader(open('courses.csv'))
+        for row in idreader: # there is just one
+            row.sort()
+            for id in row:
+                if (not os.path.exists(str(id) + '.htm')):
+                    print "Downloading course " + str(id)
+                    f = open(str(id) + '.htm', 'w')
+                    f.write(urllib.urlopen('http://www.pdga.com/course-details?id=' + str(id)).read())
+                    f.close()
+
+    def processPagesToCsv(self):
+        import csv
+        import os
+        from google.appengine.ext import db
+        courses = []
+        idreader = csv.reader(open('courses.csv'))
+        for row in idreader:
+            for id in row:
+                if (os.path.exists(str(id) + '.htm')):
+                    courses.append(self.processPage(str(id) + '.htm'))
+    
+        
+
+    def processPage(self, filename):
+        f = open(filename, 'r')
+        text = f.read()
+        f.close()
+        course = {}
+
+        latres = re.search('latitude=(-?\d+[.]\d+)', text)
+        lonres = re.search('longitude=%20(-?\d+[.]\d+)', text)
+        zipres = re.search('zipcode=(\d+)', text)
+        yearres = re.search('<strong>Course Established:</strong>\s*(\d+)\s*', text)
+        descriptionres = re.search('<strong>Description:</strong>\s*(.*)\s*</td>', text)
+        nameres = re.search('<h2>\s*(.*)\s*</h2>', text)
+        courselenres = re.search('<strong>Course Length:</strong>&nbsp;(\d+)', text)
+        altcourselenres = re.search('<strong>Alternate Course Length:</strong>&nbsp;(\d+)', text)
+        cityres = re.search('\s+(\w.+),\s+<a href="/courses-by-state[?]SearchState', text)
+        stateres = re.search('/courses-by-state[?]SearchState=(.+)&order=city', text)
+        holesres = re.search('<strong>Holes:</strong>&nbsp;(\d+)&nbsp;(.+)</td>', text)
+        teetyperes = re.search('Type:</strong>&nbps;(.*)</td>', text);
+        lt300res = re.search('ALT="Less than 300 ft" HEIGHT=32 BORDER=0 ALIGN=ABSCENTER><br>\s+<b>(\d+)</b>', text)
+        bw300400res = re.search('ALT="300-400 ft" HEIGHT=32 BORDER=0 ALIGN=ABSCENTER><br>\s+<b>(\d+)</b>', text)
+        gt400res = re.search('ALT="More than 400 ft" HEIGHT=32 BORDER=0 ALIGN=ABSCENTER><br>\s+<b>(\d+)</b>', text)
+
+        if nameres is not None:
+            course['name'] = nameres.group(1)
+        else: course['name'] = None
+
+        if yearres is not None:
+            course['established'] = yearres.group(1)
+        else: course['established'] = None
+
+        if latres is not None and lonres is not None:
+            course['lat'] = latres.group(1)
+            course['lon'] = lonres.group(1)
+        else: course['lat'] = course['lon'] = None
+        
+        if zipres is not None:
+            course['zip'] = zipres.group(1)
+        else: course['zip'] = None
+
+        if descriptionres is not None:
+            course['description'] = descriptionres.group(1)
+        else: course['description'] = None
+
+        if cityres is not None:
+            course['city'] = cityres.group(1)
+        else: course['city'] = None
+
+        if stateres is not None:
+            course['state'] = stateres.group(1)
+        else: course['state'] = None
+
+        if courselenres is not None:
+            course['length'] = courselenres.group(1)
+        else: course['length'] = None
+
+        if altcourselenres is not None:
+            course['alternate_length'] =  altcourselenres.group(1)
+        else: course['alternate_length'] = None
+
+        if holesres is not None:
+            course['numholes'] = holesres.group(1)
+            course['basket_type'] = holesres.group(2)
+        else:
+            course['numholes'] = None
+            course['basket_type'] = None
+
+        if teetyperes is not None:
+            course['teetype'] = teetyperes.group(1)
+        else: course['teetype'] = None
+
+        if lt300res is not None:
+            course['lt300res'] = lt300res.group(1)
+        else: course['lt300res'] = None
+
+        if bw300400res is not None:
+            course['bw300400'] = bw300400res.group(1)
+        else: course['bw300400'] = None
+
+        if gt400res is not None:
+            course['gt400res'] = gt400res.group(1)
+        else: course['gt400res'] = None
+
+        return course
+                         
 if __name__ == '__main__':
     bot = PDGABot()
-    bot.harvestSite()
+    # bot.harvestCourseIds()
+    # bot.downloadCoursePages()
+    bot.processPagesToCsv()
