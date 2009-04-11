@@ -9,7 +9,17 @@ class CourseLocationsLoader(bulkload.Loader):
                   ('longitude', float),
                   ('courseName', str),
                   ('numberHoles', int),
-                  ('courseId', int),]
+                  ('courseId', int),
+                  ('yearEstablished', int),
+                  ('zip', int),
+                  ('description', str),
+                  ('state', str),
+                  ('city', str),
+                  ('basketType', str),
+                  ('teeType', str),
+                  ('holesLT300', int),
+                  ('holesBW300400', int),
+                  ('holesGT400', int),]
         bulkload.Loader.__init__(self, 'CourseLocation', fields)
         
 if __name__ == '__main__':

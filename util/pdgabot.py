@@ -88,26 +88,42 @@ class PDGABot:
         for row in idreader: # there is just one
             row.sort()
             for id in row:
-                if (not os.path.exists(str(id) + '.htm')):
+                if (not os.path.exists('coursepages/' + str(id) + '.htm')):
                     print "Downloading course " + str(id)
-                    f = open(str(id) + '.htm', 'w')
+                    f = open('coursepages/' + str(id) + '.htm', 'w')
                     f.write(urllib.urlopen('http://www.pdga.com/course-details?id=' + str(id)).read())
                     f.close()
 
     def processPagesToCsv(self):
         import csv
         import os
-        from google.appengine.ext import db
         courses = []
         idreader = csv.reader(open('courses.csv'))
         for row in idreader:
             for id in row:
-                if (os.path.exists(str(id) + '.htm')):
-                    courses.append(self.processPage(str(id) + '.htm'))
-    
+                if (os.path.exists('coursepages/' + str(id) + '.htm')):
+                    courses.append(self.processPage('coursepages/' + str(id) + '.htm', id))
         
+        csvWriter = csv.writer(open('coursedata.csv', 'w'))
+        for course in courses:
+            csvWriter.writerow([
+                course['lat'],
+                course['lon'],
+                course['name'],
+                course['id'],
+                course['established'],
+                course['zip'],
+                course['description'],
+                course['state'],
+                course['city'],
+                course['basket_type'],
+                course['teetype'],
+                course['holesLT300'],
+                course['holesBW300400'],
+                course['holesGT400']])
 
-    def processPage(self, filename):
+
+    def processPage(self, filename, courseId):
         f = open(filename, 'r')
         text = f.read()
         f.close()
@@ -129,6 +145,7 @@ class PDGABot:
         bw300400res = re.search('ALT="300-400 ft" HEIGHT=32 BORDER=0 ALIGN=ABSCENTER><br>\s+<b>(\d+)</b>', text)
         gt400res = re.search('ALT="More than 400 ft" HEIGHT=32 BORDER=0 ALIGN=ABSCENTER><br>\s+<b>(\d+)</b>', text)
 
+        course['id'] = courseId
         if nameres is not None:
             course['name'] = nameres.group(1)
         else: course['name'] = None
@@ -178,16 +195,16 @@ class PDGABot:
         else: course['teetype'] = None
 
         if lt300res is not None:
-            course['lt300res'] = lt300res.group(1)
-        else: course['lt300res'] = None
+            course['holesLT300'] = lt300res.group(1)
+        else: course['holesLT300'] = None
 
         if bw300400res is not None:
-            course['bw300400'] = bw300400res.group(1)
-        else: course['bw300400'] = None
+            course['holesBW300400'] = bw300400res.group(1)
+        else: course['holesBW300400'] = None
 
         if gt400res is not None:
-            course['gt400res'] = gt400res.group(1)
-        else: course['gt400res'] = None
+            course['holesGT400'] = gt400res.group(1)
+        else: course['holesGT400'] = None
 
         return course
                          

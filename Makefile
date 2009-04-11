@@ -3,6 +3,7 @@
 
 APPCFG = /home/osbpau/dev/python/google_appengine/appcfg.py
 APPSVR = /home/osbpau/dev/python/google_appengine/dev_appserver.py
+BULKUPLOADER = /home/osbpau/dev/python/google_appengine/tools/bulkload_client.py
 
 install:
 	$(APPCFG) update --email=osbpau@gmail.com ./
@@ -12,3 +13,6 @@ appserver:
 
 updatelogs:
 	$(APPCFG) request_logs ./ logs.txt
+
+uploadlocal:
+	$(BULKUPLOADER) --config_file=dataloader.py --filename=util/coursedata.csv --kind=Course --app_id=discgolfhub --url=http://localhost:8080/remote_api
