@@ -15,46 +15,47 @@ h3 {
 }
 
 h2, h3, h4, h5, h6 {
-	font-stretch: normal;
-	font-variant: normal;
-	font-weight: bold;
+    font-family: Georgia, "Times New Roman", serif;
+    font-stretch: normal;
+    font-variant: normal;
+    font-weight: bold;
 }
 
 code { font-family: Consolas, Monaco, "Courier New", Courier, monospace; }
 
 input[type=button], input[type=submit] {
-	font: normal 11px/16px "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
-	text-decoration: none;
-	padding: 2px 8px !important;
-	cursor: pointer;
-	border: 1px solid #bbb;
-	-moz-border-radius: 11px;
-	-khtml-border-radius: 11px;
-	-webkit-border-radius: 11px;
-	border-radius: 11px;
-	-moz-box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-khtml-box-sizing: content-box;
-	box-sizing: content-box;
-	color: #464646;
-	text-shadow: rgba(255,255,255,1) 0 1px 0;
+    font: normal 11px/16px "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+    text-decoration: none;
+    padding: 2px 8px !important;
+    cursor: pointer;
+    border: 1px solid #bbb;
+    -moz-border-radius: 11px;
+    -khtml-border-radius: 11px;
+    -webkit-border-radius: 11px;
+    border-radius: 11px;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -khtml-box-sizing: content-box;
+    box-sizing: content-box;
+    color: #464646;
+    text-shadow: rgba(255,255,255,1) 0 1px 0;
 }
 
 input[type=button]:hover, input[type=submit]:hover {
-	color: #000;
-	border-color: #666;
+    color: #000;
+    border-color: #666;
 }
 
 input[type=button], input[type=submit] {
-	background: #f2f2f2;
+    background: #f2f2f2;
 }
 
 input[type=button]:active, input[type=submit]:active {
-	background: #eee;
+    background: #eee;
 }
 
 body, html {
-	color:#555555;
-	font-family:"Lucida Grande",Verdana,"Bitstream Vera Sans",Arial,sans-serif;
-	line-height:22px;
+    color: #000;
+    font-family:"Lucida Grande",Verdana,"Bitstream Vera Sans",Arial,sans-serif;
+    line-height:22px;
 }

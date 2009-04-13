@@ -1,15 +1,15 @@
-from google.appengine.ext import bulkload
-from google.appengine.api import datastore_types
-from google.appengine.ext import search
+from google.appengine.ext import db
+# from google.appengine.ext import bulkload
+import models
 
-class CourseLocationsLoader(bulkload.Loader):
+class CourseLoader(Loader):
     def __init__(self):
         # Let's tie this sucker into the db model
         fields = [('latitude', float),
                   ('longitude', float),
                   ('courseName', str),
-                  ('numberHoles', int),
                   ('courseId', int),
+                  ('numberHoles', int),
                   ('yearEstablished', int),
                   ('zip', int),
                   ('description', str),
@@ -20,7 +20,8 @@ class CourseLocationsLoader(bulkload.Loader):
                   ('holesLT300', int),
                   ('holesBW300400', int),
                   ('holesGT400', int),]
-        bulkload.Loader.__init__(self, 'CourseLocation', fields)
-        
-if __name__ == '__main__':
-    bulkload.main(CourseLocationsLoader())
+        Loader.__init__(self, 'Course', fields)
+
+#if __name__ == '__main__':
+#    Loader.main(CourseLocationsLoader())
+

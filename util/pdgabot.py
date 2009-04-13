@@ -111,6 +111,7 @@ class PDGABot:
                 course['lon'],
                 course['name'],
                 course['id'],
+                course['numholes'],
                 course['established'],
                 course['zip'],
                 course['description'],
@@ -148,63 +149,66 @@ class PDGABot:
         course['id'] = courseId
         if nameres is not None:
             course['name'] = nameres.group(1)
-        else: course['name'] = None
+        else: course['name'] = ''
 
         if yearres is not None:
             course['established'] = yearres.group(1)
-        else: course['established'] = None
+        else: course['established'] = -1
 
         if latres is not None and lonres is not None:
             course['lat'] = latres.group(1)
             course['lon'] = lonres.group(1)
-        else: course['lat'] = course['lon'] = None
+        else: course['lat'] = course['lon'] = 0.0
         
         if zipres is not None:
             course['zip'] = zipres.group(1)
-        else: course['zip'] = None
+        else: course['zip'] = 0
 
         if descriptionres is not None:
-            course['description'] = descriptionres.group(1)
-        else: course['description'] = None
+            try:
+                course['description'] = descriptionres.group(1).encode('utf-8', 'ignore')
+            except:
+                course['description'] = ''
+        else: course['description'] = ''
 
         if cityres is not None:
             course['city'] = cityres.group(1)
-        else: course['city'] = None
+        else: course['city'] = ''
 
         if stateres is not None:
             course['state'] = stateres.group(1)
-        else: course['state'] = None
+        else: course['state'] = ''
 
         if courselenres is not None:
             course['length'] = courselenres.group(1)
-        else: course['length'] = None
+        else: course['length'] = -1
 
         if altcourselenres is not None:
             course['alternate_length'] =  altcourselenres.group(1)
-        else: course['alternate_length'] = None
+        else: course['alternate_length'] = -1
 
         if holesres is not None:
             course['numholes'] = holesres.group(1)
             course['basket_type'] = holesres.group(2)
         else:
-            course['numholes'] = None
-            course['basket_type'] = None
+            course['numholes'] = -1
+            course['basket_type'] = ''
 
         if teetyperes is not None:
             course['teetype'] = teetyperes.group(1)
-        else: course['teetype'] = None
+        else: course['teetype'] = ''
 
         if lt300res is not None:
             course['holesLT300'] = lt300res.group(1)
-        else: course['holesLT300'] = None
+        else: course['holesLT300'] = -1
 
         if bw300400res is not None:
             course['holesBW300400'] = bw300400res.group(1)
-        else: course['holesBW300400'] = None
+        else: course['holesBW300400'] = -1
 
         if gt400res is not None:
             course['holesGT400'] = gt400res.group(1)
-        else: course['holesGT400'] = None
+        else: course['holesGT400'] = -1
 
         return course
                          

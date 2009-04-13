@@ -7,6 +7,12 @@ p {
     margin-bottom: 1.4em;
 }
 
+h1 {
+    font-family: Georgia, "Times New Roman";
+    color: #000;
+    margin-bottom: 20px;
+}
+
 .wrapper {
     width: 960px; /* Same as fb... must work for people */
     margin: 0 auto;
@@ -39,15 +45,18 @@ div#header {
 }
 
 #site_title {
-    color:#333;
+    color:#090;
+    display: block;
     font-weight: normal;
     font-family: Georgia,Times, "Times New Roman", serif;
     font-size: 22px;
-    font-style: italic;
+    /*font-style: italic;*/
     line-height: 1em;
+    letter-spacing: 0.8px;
     padding-bottom: 12px;
     padding-left: 15px;
     text-shadow: 0 1px 0 #E4F2FD;
+    width: 400px;
 }
 
 #login {

@@ -1,35 +1,47 @@
 {% extends "base.html" %}
 
 {% block title %}Disc Golf Hub{% endblock %}
-{% block pagebar %}
-<h2>Welcome to the Disc Golf Hub</h2>
-{% endblock %}
 
 {% block content %}
+<div style="padding-bottom: 10px; border-bottom: solid 2px #000;
+            margin-bottom: 20px;">
+  <div style="float: right">
+    <img src="/images/dgcropped.jpg" alt="Welcome to the hub" />
+  </div>
+  <h1 style="width: 250px; font-size: 310%; line-height: 1.3;
+  text-align: center">Welcome to the Disc Golf Hub</h1>
+  <div style="clear: both"></div>
+</div>
+<div style="clear: both"></div>
 <div>
   <div style="float: left; width: 450px;">
   <h3>Welcome</h3>
   <p>Welcome.  Disc Golf Hub is the place for disc golfers across
     the world to find, rate, and comment on over 3000 courses, keep track
     of scores, and communicate with other lovers of the game.</p>
+  <p>The site uses <a href="http://facebook.com/">Facebook</a> connect
+  to provide seemless integration with your facebook account and your
+  disc golfing life.  No separate registration is needed, you can just
+  use your existing facebook account.</p>
   </div>
   <div style="float: right; width: 450px">
-  <h3>Get Started</h3>
-  <p>Getting started is easy.  We use Facebook Connect for authentication
-    so you don't need to create another account to participate in the
-    community.  Just click on the connect near the top of your
-    screen</p>
+    <h3>Find Courses</h3>
+    <p>Visit the <a href="courselocator/">Course Locator</a> to find
+      courses near you, wherever you are.</p>
+    <div>
+      <a href="/coursemap/" style="border:none">
+        <img src="/images/coursemap.png" alt="Course Map" />
+      </a>
+    </div>
   </div>
-  
-  <h3>Find Courses</h3>
-  <p>Visit the <a href="courselocator/">Course Locator</a> to find
-  courses near you, wherever you are.</p>
+  <div style="clear: both"></div>
   <h3>What do you think?</h3>
   <p>So, what do you think?  Development is active and your input is
     more than welcome!  In order to comment you must login (using
     Facebook connect) at the top of the page.  Be sure to uncheck
     posting to your facebook profile unless you want to share your love!</p>
-  <fb:comments numposts="4" title="discgolfhub.com beta"
+  
+<fb:comments numposts="4" title="discgolfhub.com beta"
                simple="1"></fb:comments>
 </div>
 

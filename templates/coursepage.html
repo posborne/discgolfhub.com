@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true_or_false&key=ABQIAAAA4J1xeUoGXO89TjdkJmYHURRlOb26qSyU154aZeLwOrF4C7-DphSDvFM24-9qKJPINdNlZJYNCvq7iQ"
+          type="text/javascript">
+    </script>
+{% endblock  %}
+{% block title %}Disc Golf Hub: {{ courseName }}{% endblock %}
+
+{% block content %}
+<div>
+  <h1>{{ courseName }}</h1>
+  <div id="course_description">
+    <h3>Course Description</h3>
+    <p>{{ description }}</p>
+  </div>
+</div>
+{% endblock %}

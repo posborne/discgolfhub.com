@@ -1,4 +1,4 @@
-/**************************************************************
+/************************************************************ *
  * ALL CODE COPYRIGHT 2009, Paul Osborne
  * 
  * @author Paul Osborne
@@ -26,11 +26,14 @@ function createMarkersForJSON(json) {
             icon.shadowSize = new GSize(0,0);
             var marker = new GMarker(mapPoint, {title: coordinate.name + " (" + coordinate.numholes + ")", icon: icon});
             GEvent.addListener(marker, "click", function() {
-                    var myHtml = "<strong>" + coordinate.name + "</strong>";
-                    myHtml += "<br />Holes: " + coordinate.numholes;
-                    myHtml += "<br /><a href=\"" + detailsUrlBase + coordinate.id + "\">Visit at PDGA</a>";
+                    var myHtml = "<div style='font-size: 70%'>" +
+                        "<strong><a href='/coursepage/?id=" + coordinate.id + "'>" + coordinate.name + "</a></strong>" +
+                        "<br/>" + coordinate.city + ", " + coordinate.state +
+                        "<br />Holes: " + coordinate.numholes +
+                        "<br /><a href=\"" + detailsUrlBase + coordinate.id + "\">Visit at PDGA</a>" +
+                        "</div>";
                     map.openInfoWindowHtml(mapPoint, myHtml);
-			});
+                });
             map.addOverlay(marker);
 	});
     markerManager.addMarkers(markers, 1);
@@ -54,8 +57,11 @@ function loadGoogleMap() {
     if (GBrowserIsCompatible()) {
 	  var mapDiv = document.getElementById("map");
           map = new GMap2(mapDiv);
+          // 38.27268853598097, -92.724609375 is 
+          // somewhere around kansas with zoomlevel 4
           map.setCenter(new GLatLng(38.27268853598097, -92.724609375), 4);
-          map.addControl(new GSmallZoomControl());
+          map.addControl(new GLargeMapControl3D());
+          map.addControl(new GMapTypeControl());
           var mgrOptions = { borderPadding: 100, maxZoom: 15, trackMarkers: true };
           markerManager = new MarkerManager(map, mgrOptions);
     }
@@ -63,9 +69,8 @@ function loadGoogleMap() {
 
 function zoomAndCenter(zipCode) {
     var geocoder = new GClientGeocoder();
-    geocoder.getLatLng(
-                       zipCode,
-			function(point) {
+    geocoder.getLatLng(zipCode,
+                       function(point) {
                            if (!point) {
                                alert("Couldn't find: " + zipCode);
                            } else {

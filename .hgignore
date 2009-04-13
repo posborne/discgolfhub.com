@@ -5,6 +5,8 @@ syntax: glob
 *.pyc
 *.tmp
 *.bak
+*.sql3
 log.txt
 util/*.htm
 util/*.csv
+util/coursepages/*
