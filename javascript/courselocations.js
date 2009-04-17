@@ -6,6 +6,7 @@
  *************************************************************/
 var map;
 var markerManager;
+var activeCourse = -1; 
 
 function createMarkersForJSON(json) {
     // The JSON for the markers is in the form
@@ -21,7 +22,11 @@ function createMarkersForJSON(json) {
             var mapPoint = new GLatLng(parseFloat(coordinate.lat), 
                                        parseFloat(coordinate.lon));
             var icon = new GIcon(G_DEFAULT_ICON);
-            //icon.iconSize = new GSize(10, 15);
+            if (coordinate.id == activeCourse) {
+                icon.image = '/images/markeryellow.png';
+                icon.iconSize = new GSize(20, 34);
+                icon.iconAnchor = new GPoint(9, 34);
+            }
             icon.shadow = '';
             icon.shadowSize = new GSize(0,0);
             var marker = new GMarker(mapPoint, {title: coordinate.name + " (" + coordinate.numholes + ")", icon: icon});
@@ -50,6 +55,15 @@ function connectFacebook() {
 }
 
 /**
+ * For a course page we need some state variable which tells us which course
+ * is the course we are currently focused on so we can show it in a different
+ * color.  This function lets us mutate that variable
+ */
+function setActiveCourse(id) {
+    activeCourse = id;
+}
+
+/**
  * Load the google map centered somewhere in the midwest.  Set up the
  * appropriate display parameters
  */
@@ -65,6 +79,15 @@ function loadGoogleMap() {
           var mgrOptions = { borderPadding: 100, maxZoom: 15, trackMarkers: true };
           markerManager = new MarkerManager(map, mgrOptions);
     }
+}
+
+/**
+ * When we really know where we want to go we load that point at a higher zoom
+ * level with the marker colored differenetly.
+ */
+function zoomAndCenterCoordinate(latitude, longitude) {
+    map.setCenter(new GLatLng(latitude, longitude), 13);
+    $.getJSON("/getpoints/?lat=" + latitude + "&lon=" + longitude, createMarkersForJSON);
 }
 
 function zoomAndCenter(zipCode) {

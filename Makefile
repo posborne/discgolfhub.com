@@ -6,7 +6,7 @@ APPSVR = /home/osbpau/dev/python/google_appengine/dev_appserver.py
 BULKUPLOADER = /home/osbpau/dev/python/google_appengine/bulkloader.py
 
 install:
-1;1704;0c	$(APPCFG) update --email=osbpau@gmail.com ./
+	$(APPCFG) update --email=osbpau@gmail.com ./
 
 appserver:
 	$(APPSVR) --disable_static_caching ./

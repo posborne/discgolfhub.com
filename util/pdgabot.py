@@ -141,7 +141,7 @@ class PDGABot:
         cityres = re.search('\s+(\w.+),\s+<a href="/courses-by-state[?]SearchState', text)
         stateres = re.search('/courses-by-state[?]SearchState=(.+)&order=city', text)
         holesres = re.search('<strong>Holes:</strong>&nbsp;(\d+)&nbsp;(.+)</td>', text)
-        teetyperes = re.search('Type:</strong>&nbps;(.*)</td>', text);
+        teetyperes = re.search('Type:</strong>&nbsp;(.*)</td>', text);
         lt300res = re.search('ALT="Less than 300 ft" HEIGHT=32 BORDER=0 ALIGN=ABSCENTER><br>\s+<b>(\d+)</b>', text)
         bw300400res = re.search('ALT="300-400 ft" HEIGHT=32 BORDER=0 ALIGN=ABSCENTER><br>\s+<b>(\d+)</b>', text)
         gt400res = re.search('ALT="More than 400 ft" HEIGHT=32 BORDER=0 ALIGN=ABSCENTER><br>\s+<b>(\d+)</b>', text)

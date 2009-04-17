@@ -43,7 +43,6 @@ class GPSCoords(webapp.RequestHandler):
                               'lon': courseLocation.longitude,
                               'numholes': courseLocation.numberHoles,
                               'id': courseLocation.courseId,
-                              'description': courseLocation.description,
                               'city': courseLocation.city,
                               'state': courseLocation.state})
           
@@ -128,7 +127,13 @@ class GetCoursePage(webapp.RequestHandler):
                       'id': course.courseId,
                       'description': course.description,
                       'city': course.city,
-                      'state': course.state}
+                      'state': course.state,
+                      'zip' : course.zip,
+                      'teeType': course.teeType,
+                      'basketType': course.basketType,
+                      'holesLT300': course.holesLT300,
+                      'holesBW300400': course.holesBW300400,
+                      'holesGT400': course.holesGT400 }
       
       path = os.path.join(os.path.dirname(__file__), 'templates/coursepage.html')
       self.response.out.write(template.render(path, templatevals))
