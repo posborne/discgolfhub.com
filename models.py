@@ -1,6 +1,10 @@
 from google.appengine.ext import db
 
 class Course(db.Model):
+    """
+    A course has a number of different properties.  We will have
+    indices on latitude, longitude, and courseId
+    """
     latitude = db.FloatProperty()
     longitude = db.FloatProperty()
     courseName = db.StringProperty()
@@ -16,3 +20,12 @@ class Course(db.Model):
     holesLT300 = db.IntegerProperty()
     holesBW300400 = db.IntegerProperty()
     holesGT400 = db.IntegerProperty()
+
+class CourseReview(db.Model):
+    """
+    Course reviews consist of review text and a rating
+    """
+    courseID = db.IntegerProperty()
+    reviewText = db.TextProperty()
+    courseRating = db.IntegerProperty()
+    

@@ -4,3 +4,4 @@ indexes:
   - name: longitude
   - name: latitude
   - name: courseId
+
