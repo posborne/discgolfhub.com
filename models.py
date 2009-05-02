@@ -23,9 +23,11 @@ class Course(db.Model):
 
 class CourseReview(db.Model):
     """
-    Course reviews consist of review text and a rating
+    Course reviews consist of review text and a rating tied to the
+    poster (through facebook id) and course (through course id)
     """
     courseID = db.IntegerProperty()
     reviewText = db.TextProperty()
-    courseRating = db.IntegerProperty()
+    overallRating = db.IntegerProperty()
+    fbUID = db.IntegerProperty()
     

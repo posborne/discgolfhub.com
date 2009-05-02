@@ -5,6 +5,7 @@
   </script>
   <script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js"></script>
   <script src="../javascript/courselocations.js" type="text/javascript"></script>
+  <script src="../javascript/coursepage.js" type="text/javascript"></script>
   <script type="text/javascript">
     $(document).ready(function() {
         $("#destpar").hide();
@@ -31,10 +32,27 @@
       <a href="http://www.pdga.com/course-details?id={{ id }}">{{ courseName }} on PDGA</a>
     </p>
     <h3>Course Reviews</h3>
-    <fb:comments numposts="4" 
-		 title="Course Review of {{ courseName }} on discgolfhub.com"
-		 width="450px" 
-		 simple="1"></fb:comments>
+    {% for review in reviews %}
+        <p>
+            <strong>Review by Facebook UID: {{ review.fbuid }}</strong><br />
+            Rating: {{ review.rating }}<br />
+            {{ review.review }}    
+        </p>
+    {% endfor %}
+    <h4>Write a Review</h4>
+    <p>
+        <label for="rating_select">Rating:</label> 
+        <select id="rating_select" name="rating_select">
+            <option value="1">1 - Very Poor</option>
+            <option value="2">2 - Poor</option>
+            <option value="3">3 - Fair</option>
+            <option value="4">4 - Good</option>
+            <option value="5">5 - Excellent</option>
+        </select><br />
+        <label for="reviewtext">Review:</label><br />
+        <textarea id="reviewtext" name="reviewtext"></textarea><br />
+        <button type="button" name="submit_button" value="but" onclick="submit_course_review()">Submit</button>
+    </p>
   </div>
   <div style="float: right; width: 460px">
     <div id="map" style="width: 450px; height: 450px;"></div>

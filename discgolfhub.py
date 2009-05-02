@@ -8,6 +8,10 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from models import Course
 
+FB_API_KEY = '05ef2c8b16b7e5d99da222965006275a'
+FB_APP_SECRET = 'be0fdb491f54bf358109c1e0b0605b03'
+FB_APP_ID = 45846472395
+
 class MainPage(webapp.RequestHandler):
   def get(self):
     path = os.path.join(os.path.dirname(__file__), 'templates/home.html')
@@ -66,7 +70,6 @@ class GetCourses(webapp.RequestHandler):
     courses = []
     for courseLocation in results:
       courses.append({'id': courseLocation.courseId})
-
       template_values = {'courses': courses,}
       path = os.path.join(os.path.dirname(__file__), 'templates/courses_csv.html')
       self.response.out.write(template.render(path, template_values))
@@ -98,8 +101,8 @@ class ConnectTest(webapp.RequestHandler):
     
 class RedirectHome(webapp.RequestHandler):
   def get(self):
-    self.redirect("/home")
-        
+    self.redirect("/home/")
+
 class GetCoursePage(webapp.RequestHandler):
   """
   Get and redner the specified course page.  Course pages are
@@ -112,7 +115,7 @@ class GetCoursePage(webapp.RequestHandler):
     query = db.Query(Course)
     query.filter('courseId =', courseId)
     results = query.fetch(1)
-
+    
     if len(results) < 1:
       template_values = {'courseId' : courseId}
       path = os.path.join(os.path.dirname(__file__), 'templates/coursenotfound.html')
@@ -120,6 +123,16 @@ class GetCoursePage(webapp.RequestHandler):
     else:
       # There should just be one course
       course = results[0]
+      
+      query = db.Query(CourseReview)
+      query.filter('courseId =', courseId)
+      results = query.fetch(25)
+      reviews = []
+      for review in results:
+          reviews.append({'fbuid': review.fbUID,
+                          'rating': review.overallRating,
+                          'review': review.reviewText })
+      
       templatevals = {'courseName': course.courseName, 
                       'lat': course.latitude,
                       'lon': course.longitude,
@@ -133,19 +146,40 @@ class GetCoursePage(webapp.RequestHandler):
                       'basketType': course.basketType,
                       'holesLT300': course.holesLT300,
                       'holesBW300400': course.holesBW300400,
-                      'holesGT400': course.holesGT400 }
+                      'holesGT400': course.holesGT400 
+                      'reviews' : reviews }
       
       path = os.path.join(os.path.dirname(__file__), 'templates/coursepage.html')
       self.response.out.write(template.render(path, templatevals))
 
+class AddCourseReview(webapp.RequestHandler):
+    """
+    Handle the adding of courses.  Before this is done we need to verify
+    that the request is associated with a legitimate facebook session
+    to avoid fraudelent entries.  We also do validation of the data
+    """
+    from lib.facebook import *
+    def get(self):
+        rating = int(cgi.escape(self.request.post("courseRating")))
+        review = string(cgi.escape(self.request.post("review")))
+        courseId = int(cgi.escape(self.request.post("courseId")))
+        fb = Facebook(FB_API_KEY, FB_APP_SECRET)
+        if not fb.validate_cookie_signature(self.request.cookies):
+            self.response.out.write("NOT LOGGED IN")
+        else:
+            cr = CourseReview(courseID = courseId,
+                              reviewText = review,
+                              overallRating = rating,
+                              fbUID = fb.uid);
 
 # Routes for WSGI application
 application = webapp.WSGIApplication([('/', RedirectHome),
-                                      ('/home', MainPage),
+                                      ('/home/', MainPage),
                                       ('/getpoints/', GPSCoords),
                                       ('/getcourses/', GetCourses),
                                       ('/coursemap/', CourseMap),
-                                      ('/coursepage/', GetCoursePage),],
+                                      ('/coursepage/', GetCoursePage),
+                                      ('/addcoursereview/', AddCourseReview),],
                                      debug=True)
 
 # We use main because GAE will optimize based on this
