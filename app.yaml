@@ -31,5 +31,5 @@ handlers:
 - url: /.*
   script: discgolfhub.py
 
-skip_files:
-- ^(.*/)?util/.*$
+#skip_files:
+#- ^(.*/)?util/.*$

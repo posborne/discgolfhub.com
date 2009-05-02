@@ -25,11 +25,30 @@
       onunload="{% block onunload %}{% endblock %}">
   <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/XdCommReceiver.js" type="text/javascript"></script> 
   <div id="header" class="wrapper">
-    <div id="topbar" style="background: #ececec; float: right; padding: 8px; border-bottom-left-radius: 4em">
-      <div id="login">
-        <fb:login-button onlogin="update_login_box()" size="medium" length="long">
-        </fb:login-button>
-      </div>
+    <div id="topbar" style="font-size: 75%; background: #efe; float: right; line-height: 1.1; padding: 8px; padding-left: 20px; -moz-border-radius-bottomleft: 2em">
+      <table>
+          <tr>
+              <td style="padding-right: 30px">
+                <div id="quicklinks" style="font-size: 125%; font-weight: bold">
+					<a href="../home/">Home</a> |
+					<a href="../coursemap/">Courses</a>
+  	  			</div>
+              </td>
+              <td>
+                <div id="login" style="float: right">
+					<fb:login-button onlogin="update_login_box()" size="medium" length="long">
+					</fb:login-button>
+				  </div>
+				  <div id="loggedin" style="display: none; float: right">
+					<span style='float:left; margin-right: 15px; text-align: center'>
+					Logged in as <fb:name uid='loggedinuser' useyou='false'></fb:name><br />
+					<a href='#' onclick='facebook_logout()'>Logout</a> | Settings
+					</span>
+					<fb:profile-pic uid='loggedinuser' facebook-logo='true' width='32' height='32' ></fb:profile-pic> <br />
+				  </div>
+              </td>
+          </tr>
+      </table>      
     </div>
     <h1 id="site_title"><a href="../" style="color: inherit">discgolfhub<span style="color: #999">.com</a></span></h1>
   </div>
