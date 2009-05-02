@@ -26,6 +26,7 @@
     <p>{{ description }}</p>
     <h3>Course Details</h3>
     <p>
+      <strong>Rating:</strong> {{ courseRating }}<br />
       <strong>Location:</strong> {{ city }}, {{ state }}<br />
       <strong>Holes:</strong> {{ numholes }} ({{ basketType }})<br />
       <strong>Tee Type:</strong> {{ teeType }}<br />
@@ -33,25 +34,32 @@
     </p>
     <h3>Course Reviews</h3>
     {% for review in reviews %}
-        <p>
-            <strong>Review by Facebook UID: {{ review.fbuid }}</strong><br />
-            Rating: {{ review.rating }}<br />
-            {{ review.review }}    
+        <p style="font-size: 80%">
+            <div style="float:left; text-align: center; padding-right: 5px; padding-bottom: 5px; padding-top: 5px; font-size: 80%">
+                <fb:profile-pic uid="{{ review.fbUID }}" size="square" facebook-logo="true"></fb:profile-pic><br />
+                <fb:name uid="{{ review.fbUID }}" useyou="false"></fb:name>
+            </div>
+            <strong>Overall Rating: {{ review.overallRating }}</strong><br />
+            {{ review.reviewText }}    
         </p>
+        <div style="clear:both"><hr /></div>
     {% endfor %}
     <h4>Write a Review</h4>
     <p>
-        <label for="rating_select">Rating:</label> 
-        <select id="rating_select" name="rating_select">
-            <option value="1">1 - Very Poor</option>
-            <option value="2">2 - Poor</option>
-            <option value="3">3 - Fair</option>
-            <option value="4">4 - Good</option>
-            <option value="5">5 - Excellent</option>
-        </select><br />
-        <label for="reviewtext">Review:</label><br />
-        <textarea id="reviewtext" name="reviewtext"></textarea><br />
-        <button type="button" name="submit_button" value="but" onclick="submit_course_review()">Submit</button>
+        <form name="course_review" method="post" action="../addcoursereview/">
+            <label for="rating">Rating:</label> 
+            <select id="rating" name="rating_select">
+                <option value="1">1 - Very Poor</option>
+                <option value="2">2 - Poor</option>
+                <option value="3">3 - Fair</option>
+                <option value="4">4 - Good</option>
+                <option value="5">5 - Excellent</option>
+            </select><br />
+            <label for="reviewtext">Review:</label><br />
+            <textarea id="reviewtext" name="reviewtext" rows="10" cols="56"></textarea><br />
+            <input type="hidden" name="courseId" value="{{ id }}" />
+            <input type="submit" name="submit_button" value="submit" />
+        </form>
     </p>
   </div>
   <div style="float: right; width: 460px">
@@ -60,8 +68,10 @@
       Driving Directions
     </p>
     <p id="destpar" style="text-align:center">
-      <label for="dest">Where are you coming from</label><br />
+      <label for="dest">Starting Address</label>
+      <br />
       <input type="text" id="dest" size="45" />
+      <button type="button" onclick="window.parent.location.href = 'http://maps.google.com/maps?saddr=' + $('#dest').val() + '&daddr={{ lat }},+{{ lon }}'">Go</button>
     </p>
   </div>
 </div>

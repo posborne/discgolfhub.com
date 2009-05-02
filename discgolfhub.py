@@ -7,6 +7,8 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from models import Course
+from models import CourseReview
+from facebook import Facebook
 
 FB_API_KEY = '05ef2c8b16b7e5d99da222965006275a'
 FB_APP_SECRET = 'be0fdb491f54bf358109c1e0b0605b03'
@@ -123,17 +125,15 @@ class GetCoursePage(webapp.RequestHandler):
     else:
       # There should just be one course
       course = results[0]
+      reviewquery = CourseReview.all().filter('courseID =', int(courseId))
+      reviews = reviewquery.fetch(25)
       
-      query = db.Query(CourseReview)
-      query.filter('courseId =', courseId)
-      results = query.fetch(25)
-      reviews = []
-      for review in results:
-          reviews.append({'fbuid': review.fbUID,
-                          'rating': review.overallRating,
-                          'review': review.reviewText })
-      
-      templatevals = {'courseName': course.courseName, 
+      courseRating = 0
+      for review in reviews:
+          courseRating += float(review.overallRating) / len(reviews)
+           
+      templatevals = {'courseRating': courseRating,
+                      'courseName': course.courseName, 
                       'lat': course.latitude,
                       'lon': course.longitude,
                       'numholes': course.numberHoles,
@@ -146,7 +146,7 @@ class GetCoursePage(webapp.RequestHandler):
                       'basketType': course.basketType,
                       'holesLT300': course.holesLT300,
                       'holesBW300400': course.holesBW300400,
-                      'holesGT400': course.holesGT400 
+                      'holesGT400': course.holesGT400,
                       'reviews' : reviews }
       
       path = os.path.join(os.path.dirname(__file__), 'templates/coursepage.html')
@@ -158,19 +158,21 @@ class AddCourseReview(webapp.RequestHandler):
     that the request is associated with a legitimate facebook session
     to avoid fraudelent entries.  We also do validation of the data
     """
-    from lib.facebook import *
-    def get(self):
-        rating = int(cgi.escape(self.request.post("courseRating")))
-        review = string(cgi.escape(self.request.post("review")))
-        courseId = int(cgi.escape(self.request.post("courseId")))
+    def post(self):
+        rating = int(cgi.escape(self.request.get("rating_select")))
+        review = str(cgi.escape(self.request.get("reviewtext")))
+        courseId = int(cgi.escape(self.request.get("courseId")))
         fb = Facebook(FB_API_KEY, FB_APP_SECRET)
-        if not fb.validate_cookie_signature(self.request.cookies):
-            self.response.out.write("NOT LOGGED IN")
-        else:
+        if fb.check_session(self.request):
             cr = CourseReview(courseID = courseId,
                               reviewText = review,
                               overallRating = rating,
-                              fbUID = fb.uid);
+                              fbUID = long(fb.uid));
+            cr.put()
+        self.redirect('/coursepage/?id=' + str(courseId))
+        self.response.out.write("Course: " + str(courseId) +
+                                "\nReview: " + str(review) +
+                                "\nRating: " + str(rating))
 
 # Routes for WSGI application
 application = webapp.WSGIApplication([('/', RedirectHome),

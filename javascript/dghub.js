@@ -35,11 +35,11 @@ function facebook_logout() {
 function update_login_box() {
     $('#login').css({'font-size': '80%', "line-height": "1"});
     $('#login').html(
-        "<span style='float:left; margin-right: 15px'>" +
-        "You are logged in<br /> as <fb:name uid='loggedinuser' useyou='false'></fb:name><br />" +
+        "<span style='float:left; margin-right: 15px; text-align: center'>" +
+        "Logged in as<br/><fb:name uid='loggedinuser' useyou='false'></fb:name><br /><br />" +
+        "<a href='#' onclick='facebook_logout()'>Logout</a> | Settings" +
         "</span>" +
-        "<fb:profile-pic uid='loggedinuser' facebook-logo='true' size='square'></fb:profile-pic> <br />" +
-        "<a href='#' onclick='facebook_logout()'>Logout of Facebook</a>");
+        "<fb:profile-pic uid='loggedinuser' facebook-logo='true' width='32' height='32'></fb:profile-pic> <br />");
     
     // reparse XFBML on the page
     FB.XFBML.Host.parseDomTree();
