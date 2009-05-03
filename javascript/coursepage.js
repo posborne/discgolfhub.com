@@ -5,3 +5,12 @@ function submit_course_review() {
         $.post("../addcoursereview/", { courseRating: rating, review: review_text, courseId: activeCourse });
     });
 }
+
+function show_review_preview() {
+    review_text = $('#reviewtext').val();
+    $.post("../mdpreview/", { mdtext: review_text },
+        function(data) {
+            $('#previewbox').html(data);
+            $('#previewbox').show();    
+        });
+}

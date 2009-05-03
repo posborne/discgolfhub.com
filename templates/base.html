@@ -28,24 +28,32 @@
     <div id="topbar" style="font-size: 75%; background: #efe; float: right; line-height: 1.1; padding: 8px; padding-left: 20px; -moz-border-radius-bottomleft: 2em">
       <table>
           <tr>
-              <td style="padding-right: 30px">
-                <div id="quicklinks" style="font-size: 125%; font-weight: bold">
-					<a href="../home/">Home</a> |
-					<a href="../coursemap/">Courses</a>
-  	  			</div>
+              <td style="padding-right: 20px">
+                <div id="quicklinks" style="font-size: 110%; font-weight: bold">
+                    <a href="../home/">Home</a> |
+                    <a href="../coursemap/">Courses</a> |
+                    <a href="../equipment/">Discs/Gear</a> |
+                    <a href="../about/">About</a>
+                </div>
+              </td>
+              <td style="padding-right: 20px">
+                <div id="login" style="float: right">
+                    <fb:login-button onlogin="update_login_box()" size="medium" length="long">
+                    </fb:login-button>
+                  </div>
+                  <div id="loggedin" style="display: none; float: right">
+                    <span style='float:left; margin-right: 15px; text-align: center'>
+                    Logged in as <fb:name uid='loggedinuser' useyou='false'></fb:name><br />
+                    <a href='#' onclick='facebook_logout()'>Logout</a> | Settings
+                    </span>
+                    <fb:profile-pic uid='loggedinuser' facebook-logo='true' width='32' height='32' ></fb:profile-pic> <br />
+                  </div>
               </td>
               <td>
-                <div id="login" style="float: right">
-					<fb:login-button onlogin="update_login_box()" size="medium" length="long">
-					</fb:login-button>
-				  </div>
-				  <div id="loggedin" style="display: none; float: right">
-					<span style='float:left; margin-right: 15px; text-align: center'>
-					Logged in as <fb:name uid='loggedinuser' useyou='false'></fb:name><br />
-					<a href='#' onclick='facebook_logout()'>Logout</a> | Settings
-					</span>
-					<fb:profile-pic uid='loggedinuser' facebook-logo='true' width='32' height='32' ></fb:profile-pic> <br />
-				  </div>
+                <form id='sform' action="../search/" method="get">
+                  <!-- We will unobtrusively add on onblur and onfocus events -->
+                  <input type="text" id="query" name="query" value="Search Courses" />
+                </form>
               </td>
           </tr>
       </table>      

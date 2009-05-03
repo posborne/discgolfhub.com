@@ -174,6 +174,28 @@ class AddCourseReview(webapp.RequestHandler):
                                 "\nReview: " + str(review) +
                                 "\nRating: " + str(rating))
 
+class About(webapp.RequestHandler):
+    def get(self):
+        self.response.out.write("Coming Soon...")
+        
+class Equipment(webapp.RequestHandler):
+    def get(self):
+        self.response.out.write("Coming Soon...")
+
+class Search(webapp.RequestHandler):
+    def get(self):
+        query = cgi.escape(self.request.get("query"))
+        self.response.out.write("Your search for " + query + " will be available soon!")
+
+class MarkdownPreview(webapp.RequestHandler):
+    import markdown
+    
+    def post(self):
+        markdown_text = self.request.get("mdtext")
+        md = Markdown()
+        html = md.convert(md)
+        self.response.out.write(html)
+
 # Routes for WSGI application
 application = webapp.WSGIApplication([('/', RedirectHome),
                                       ('/home/', MainPage),
@@ -181,7 +203,11 @@ application = webapp.WSGIApplication([('/', RedirectHome),
                                       ('/getcourses/', GetCourses),
                                       ('/coursemap/', CourseMap),
                                       ('/coursepage/', GetCoursePage),
-                                      ('/addcoursereview/', AddCourseReview),],
+                                      ('/addcoursereview/', AddCourseReview),
+                                      ('/about/', About),
+                                      ('/equipment/', Equipment),
+                                      ('/search/', Search),
+                                      ('/mdpreview/', MarkdownPreview),],
                                      debug=True)
 
 # We use main because GAE will optimize based on this

@@ -1,6 +1,25 @@
 /** Unobtrusive onload */
 $(document).ready(function() {
     facebook_connect();
+    $('#query').val("Search Courses");
+    $('#query').css({'color': '#999'});
+    
+    // onfocus, if default, empty and make text dark
+    $('#query').focus(function() {
+        if ($(this).val() == 'Search Courses') {
+            $(this).val('');
+            $(this).css({'color': '#000'});
+        }
+    });
+    
+    // onblur, if empty, fill with text and gray text
+    $('#query').blur(function() {
+        if ($(this).val() == '') {
+            $(this).val("Search Courses");
+            $(this).css({'color': '#999'});
+        }
+    });
+    
 });
 
 /**
@@ -33,7 +52,7 @@ function facebook_logout() {
  * facebook profile
  */
 function update_login_box() {
-	$("#login").hide("normal", function() {
-		$("#loggedin").show("normal");
-	});
+    $("#login").hide("normal", function() {
+        $("#loggedin").show("normal");
+    });
 }

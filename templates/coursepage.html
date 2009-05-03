@@ -21,7 +21,19 @@
 {% block content %}
 <div>
   <h1>{{ courseName }}</h1>
-  <div id="left" style="float: left; width: 450px">
+  <div id="left" style="float: left">
+      <div style="float: right; width: 450px">
+        <div id="map" style="width:  450px; height: 300px;"></div>
+        <p style="text-align: center; color: blue; font-weight: bold; cursor: pointer;" id="dirbut">
+          Driving Directions
+        </p>
+        <p id="destpar" style="text-align:center">
+          <label for="dest">Starting Address</label>
+          <br />
+          <input type="text" id="dest" size="45" />
+          <button type="button" onclick="window.parent.location.href = 'http://maps.google.com/maps?saddr=' + $('#dest').val() + '&daddr={{ lat }},+{{ lon }}'">Go</button>
+        </p>
+      </div>
     <h3>Course Description</h3>
     <p>{{ description }}</p>
     <h3>Course Details</h3>
@@ -34,16 +46,18 @@
     </p>
     <h3>Course Reviews</h3>
     {% for review in reviews %}
-        <p style="font-size: 80%">
-            <div style="float:left; text-align: center; padding-right: 5px; padding-bottom: 5px; padding-top: 5px; font-size: 80%">
-                <fb:profile-pic uid="{{ review.fbUID }}" size="square" facebook-logo="true"></fb:profile-pic><br />
-                <fb:name uid="{{ review.fbUID }}" useyou="false"></fb:name>
+        <div class='coursereview' style="clear: both">
+            <div style="clear: both; float: left; width:  100px;">
+                <fb:profile-pic uid="{{ review.fbUID }}" size="small" facebook-logo="true"></fb:profile-pic>
             </div>
-            <strong>Overall Rating: {{ review.overallRating }}</strong><br />
-            {{ review.reviewText }}    
-        </p>
-        <div style="clear:both"><hr /></div>
+            <div style="font-size: 90%; margin-left: 110px">
+                <h5>Course Review by <fb:name uid="{{ review.fbUID }}" useyou="false"></fb:name></h5>
+                <strong>Overall Rating: {{ review.overallRating }}</strong>
+                <p>{{ review.reviewText }}</p>
+            </div>
+        </div>
     {% endfor %}
+    <div style="clear:both"></div>
     <h4>Write a Review</h4>
     <p>
         <form name="course_review" method="post" action="../addcoursereview/">
@@ -59,20 +73,10 @@
             <textarea id="reviewtext" name="reviewtext" rows="10" cols="56"></textarea><br />
             <input type="hidden" name="courseId" value="{{ id }}" />
             <input type="submit" name="submit_button" value="submit" />
+            <button type="button" onclick="show_review_preview()">Preview</button>
         </form>
     </p>
-  </div>
-  <div style="float: right; width: 460px">
-    <div id="map" style="width: 450px; height: 450px;"></div>
-    <p style="text-align: center; color: blue; font-weight: bold; cursor: pointer;" id="dirbut">
-      Driving Directions
-    </p>
-    <p id="destpar" style="text-align:center">
-      <label for="dest">Starting Address</label>
-      <br />
-      <input type="text" id="dest" size="45" />
-      <button type="button" onclick="window.parent.location.href = 'http://maps.google.com/maps?saddr=' + $('#dest').val() + '&daddr={{ lat }},+{{ lon }}'">Go</button>
-    </p>
+    <div id="previewbox" style="visibility: none"></div>
   </div>
 </div>
 {% endblock %}
