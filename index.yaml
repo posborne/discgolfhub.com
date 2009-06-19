@@ -5,3 +5,8 @@ indexes:
   - name: latitude
   - name: courseId
 
+- kind: CourseReview
+  properties:
+  - name: courseID
+  - name: ratingTimestamp
+    direction: desc

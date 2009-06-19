@@ -15,9 +15,29 @@ FB_APP_SECRET = 'be0fdb491f54bf358109c1e0b0605b03'
 FB_APP_ID = 45846472395
 
 class MainPage(webapp.RequestHandler):
+  """
+  Render the homepage.
+  """
   def get(self):
+    # TODO: pull down recent course reviews
+    query = db.Query(CourseReview)
+    query.order("-ratingTimestamp")
+    results = query.fetch(3)
+
+    # cut down the review text to 140 characters
+    for review in results:
+      if (len(review.reviewText) > 143):
+        review.reviewText = review.reviewText[:140] + "..."
+      
+      # grab the course name for each course
+      courseQuery = db.Query(Course)
+      courseQuery.filter("courseId =", review.courseID)
+      result = courseQuery.fetch(1)[0]
+      review.courseName = result.courseName
+
+    template_values =  {'recent_reviews': results}
     path = os.path.join(os.path.dirname(__file__), 'templates/home.html')
-    self.response.out.write(template.render(path, None))
+    self.response.out.write(template.render(path, template_values))
     
 class GPSCoords(webapp.RequestHandler):
     """
@@ -93,14 +113,6 @@ class XDReceiver(webapp.RequestHandler):
     path = os.path.join(os.path.dirname(__file__), 'templates/connect/xd_receiver.htm')
     self.response.out.write(template.render(path, None))
     
-class ConnectTest(webapp.RequestHandler):
-  """
-  Test the FB Connection
-  """
-  def get(self):
-    path = os.path.join(os.path.dirname(__file__), 'templates/connect/test.htm')
-    self.response.out.write(template.render(path, None))
-    
 class RedirectHome(webapp.RequestHandler):
   def get(self):
     self.redirect("/home/")
@@ -126,11 +138,13 @@ class GetCoursePage(webapp.RequestHandler):
       # There should just be one course
       course = results[0]
       reviewquery = CourseReview.all().filter('courseID =', int(courseId))
+      #reviewquery.order('-ratingTimestamp')
       reviews = reviewquery.fetch(25)
       
       courseRating = 0
       for review in reviews:
           courseRating += float(review.overallRating) / len(reviews)
+          review.reviewText = review.reviewText.replace('\n', '<br />')
            
       templatevals = {'courseRating': courseRating,
                       'courseName': course.courseName, 
@@ -159,20 +173,21 @@ class AddCourseReview(webapp.RequestHandler):
     to avoid fraudelent entries.  We also do validation of the data
     """
     def post(self):
+        fb_template_id = 83346882395
         rating = int(cgi.escape(self.request.get("rating_select")))
         review = str(cgi.escape(self.request.get("reviewtext")))
         courseId = int(cgi.escape(self.request.get("courseId")))
         fb = Facebook(FB_API_KEY, FB_APP_SECRET)
         if fb.check_session(self.request):
+            courseQuery = db.Query(Course)
+            courseQuery.filter('courseId =', courseId)
+            courseName = courseQuery.fetch(1)[0].courseName
             cr = CourseReview(courseID = courseId,
                               reviewText = review,
                               overallRating = rating,
                               fbUID = long(fb.uid));
             cr.put()
         self.redirect('/coursepage/?id=' + str(courseId))
-        self.response.out.write("Course: " + str(courseId) +
-                                "\nReview: " + str(review) +
-                                "\nRating: " + str(rating))
 
 class About(webapp.RequestHandler):
     def get(self):
@@ -192,7 +207,7 @@ class MarkdownPreview(webapp.RequestHandler):
     
     def post(self):
         markdown_text = self.request.get("mdtext")
-        md = Markdown()
+        md = markdown.Markdown()
         html = md.convert(md)
         self.response.out.write(html)
 

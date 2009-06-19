@@ -29,5 +29,6 @@ class CourseReview(db.Model):
     courseID = db.IntegerProperty()
     reviewText = db.TextProperty()
     overallRating = db.IntegerProperty()
+    ratingTimestamp = db.DateTimeProperty(auto_now_add=True)
     fbUID = db.IntegerProperty()
     

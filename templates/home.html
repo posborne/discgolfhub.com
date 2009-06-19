@@ -43,6 +43,21 @@
         <img src="/images/coursemap.png" alt="Course Map" />
       </a>
     </div>
+    <h3>Recent Reviews</h3>
+    {% for review in recent_reviews %}
+      <div class='coursereview' style="clear: both">
+        <div style="clear: both; float: left; width: 100px;">
+          <fb:profile-pic uid="{{ review.fbUID }}" size="small" height="100px" facebook-logo="true"></fb:profile-pic>
+        </div>
+        <div style="font-size: 90%; margin-left: 110px">
+          <h5><fb:name uid="{{ review.fbUID }}" useyou="false"></fb:name> reviewed <a href="../coursepage/?id={{ review.courseID }}">{{ review.courseName }}</a><br />
+	  on {{ review.ratingTimestamp.month }}/{{ review.ratingTimestamp.day }}/{{ review.ratingTimestamp.year}} at
+	  {{ review.ratingTimestamp.hour }}:{{ review.ratingTimestamp.minute }}</h5>
+          <strong>Overall Rating: {{ review.overallRating }}</strong>
+          <p>{{ review.reviewText }}</p>
+        </div>
+      </div>
+    {% endfor %}
   </div>
 </div>
 
