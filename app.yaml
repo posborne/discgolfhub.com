@@ -1,5 +1,5 @@
 application: discgolfhub
-version: alpha-5-3-09
+version: testing
 runtime: python
 api_version: 1
 

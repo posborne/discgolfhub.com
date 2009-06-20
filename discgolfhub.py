@@ -10,9 +10,19 @@ from models import Course
 from models import CourseReview
 from facebook import Facebook
 
-FB_API_KEY = '05ef2c8b16b7e5d99da222965006275a'
-FB_APP_SECRET = 'be0fdb491f54bf358109c1e0b0605b03'
-FB_APP_ID = 45846472395
+BETA = True
+if BETA:
+  FB_API_KEY = 'ca48b6923a4819cd461499d22e9f1f83'
+  FB_APP_SECRET = '6e8ef7efd6cbd9e2d9fb5899292d2f42'
+  FB_APP_ID =  93004867073
+  GMAPS_API_KEY = 'ABQIAAAA4J1xeUoGXO89TjdkJmYHURQhQ' + \
+      '2z7KQhbV9QLp9i5mcWgGGWTgxQBvtEiZSZJWnWnjy5JQ7iunS8W6w'
+else: # RELEASE VERSION
+  FB_API_KEY = '05ef2c8b16b7e5d99da222965006275a'
+  FB_APP_SECRET = 'be0fdb491f54bf358109c1e0b0605b03'
+  FB_APP_ID = 45846472395
+  GMAPS_API_KEY = 'ABQIAAAA4J1xeUoGXO89TjdkJmYHURTAD' + \
+      'O70MCbILep2VhjX-8EbOrHTghRBdGvE-ccDKwc6cBadhtv_zticeg'
 
 class MainPage(webapp.RequestHandler):
   """
@@ -102,7 +112,8 @@ class CourseMap(webapp.RequestHandler):
   """
   def get(self):
     path = os.path.join(os.path.dirname(__file__), 'templates/courselocations.html')
-    self.response.out.write(template.render(path, None))
+    template_vals = {'gmaps_api_key': GMAPS_API_KEY,}
+    self.response.out.write(template.render(path, template_vals))
     
 class XDReceiver(webapp.RequestHandler):
   """

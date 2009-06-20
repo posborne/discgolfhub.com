@@ -1,3 +1,10 @@
+var TESTING = true;
+if (TESTING) {
+    FB_API_KEY = 'ca48b6923a4819cd461499d22e9f1f83';
+} else {
+    FB_API_KEY = '05ef2c8b16b7e5d99da222965006275a';
+}
+
 /** Unobtrusive onload */
 $(document).ready(function() {
     facebook_connect();
@@ -28,8 +35,7 @@ $(document).ready(function() {
  * that it shows the logged in user's information
  */
 function facebook_connect() {
-    FB.init("05ef2c8b16b7e5d99da222965006275a", "../connect/xd_receiver.htm");
-    
+    FB.init(FB_API_KEY, "../connect/xd_receiver.htm");
     // ensure init since libraries are loaded asynchronously
     FB.ensureInit(function() {
         FB.Connect.ifUserConnected(update_login_box, null);
