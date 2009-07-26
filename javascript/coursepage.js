@@ -1,3 +1,12 @@
+/*********************************************************************
+ * Copyright (c) 2009, Paul Osborne
+ * 
+ * This module contains funtionality specific to the course page.
+ * 
+ * @author Paul Osborne
+ * @version July 19, 2009
+ ********************************************************************/
+
 function submit_course_review() {
     FB.requireSession(function() {
         review_text = $('#reviewtext').value;
@@ -30,8 +39,7 @@ function publish_review_feed() {
     return true;
 }
 
-// Note that courses is an external variable located in dghub.js
-$(document).ready(function() {
+function build_nearby_courses() {
     addCoursesChangedListener(function(courses) {
         // first, let's calculate distance for each from center point
         targetLat = activeCourse.lat;
@@ -59,12 +67,17 @@ $(document).ready(function() {
         toAppend += "</table>";
         $('#nearby_courses').append(toAppend);
     });
-});
+}
 
-// toggle directions
-$(document).ready(function() {
-        $("#destpar").hide();
-        $("#dirbut").click(function() {
-            $("#destpar").toggle("normal");
-        });
-    });
+function initialize_driving_directions() {
+    $("#destpar").hide();
+    $("#dirbut").click(function() {
+	    $("#destpar").toggle("normal");
+	});
+}
+
+//////////////////////////////////////////////////////////////////////
+// Run actions for module on startup
+//////////////////////////////////////////////////////////////////////
+$(document).ready(build_nearby_courses);
+$(document).ready(initialize_driving_directions);

@@ -38,10 +38,15 @@
               </td>
               <td style="padding-right: 20px">
                 <div id="login" style="float: right">
+                    {% if facebook %}
+                    {% else %}
                     <fb:login-button onlogin="update_login_box()" size="medium" length="long">
                     </fb:login-button>
+                    {% endif %}
                   </div>
-                  <div id="loggedin" style="display: none; float: right">
+                  <div id="loggedin" 
+                    {% if facebook %}style="float:right"
+                    {% else %}style="display: none; float: right"{% endif %} >
                     <span style='float:left; margin-right: 15px; text-align: center'>
                     Logged in as <fb:name uid='loggedinuser' useyou='false'></fb:name><br />
                     <a href='#' onclick='facebook_logout()'>Logout</a> | Settings

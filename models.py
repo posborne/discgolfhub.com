@@ -1,6 +1,7 @@
 from google.appengine.ext import db
+from google.appengine.ext import search
 
-class Course(db.Model):
+class Course(search.SearchableModel):
     """
     A course has a number of different properties.  We will have
     indices on latitude, longitude, and courseId

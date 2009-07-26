@@ -6,3 +6,6 @@
 bulkloader-*
 util/coursepages/
 util/*.csv
+.project
+.pydevproject
+.settings/*

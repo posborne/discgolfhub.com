@@ -64,3 +64,20 @@ div#header {
 #login {
     font-size: 85%;
 }
+
+#queryresults {
+    width: 580px;
+    margin-top: 20px;
+    font-size: 90%;
+}
+
+#querymap {
+    
+}
+
+.queryresult {
+    padding-top: 10px;
+    border-top: dotted 2px #aaa;
+}
+
+

@@ -1,8 +1,6 @@
-from google.appengine.ext import db
-# from google.appengine.ext import bulkload
-import models
+from google.appengine.tools import bulkloader
 
-class CourseLoader(Loader):
+class CourseLoader(bulkloader.Loader):
     def __init__(self):
         # Let's tie this sucker into the db model
         fields = [('latitude', float),
@@ -20,8 +18,7 @@ class CourseLoader(Loader):
                   ('holesLT300', int),
                   ('holesBW300400', int),
                   ('holesGT400', int),]
-        Loader.__init__(self, 'Course', fields)
+        bulkloader.Loader.__init__(self, 'Course', fields)
 
-#if __name__ == '__main__':
-#    Loader.main(CourseLocationsLoader())
+loaders = [CourseLoader]
 
