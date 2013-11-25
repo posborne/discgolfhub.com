@@ -23,8 +23,8 @@ else: # RELEASE VERSION
 
 class FacebookRequestHandler(webapp.RequestHandler):
 
-    def __init__(self):
-        webapp.RequestHandler.__init__(self)
+    def __init__(self, *args, **kwargs):
+        webapp.RequestHandler.__init__(self, *args, **kwargs)
 
     def get_facebook(self):
         fb = Facebook(FB_API_KEY, FB_APP_SECRET)

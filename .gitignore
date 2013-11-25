@@ -9,3 +9,7 @@ util/*.csv
 .project
 .pydevproject
 .settings/*
+.buildout
+*.egg-info*
+downloads
+

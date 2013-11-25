@@ -1,0 +1,25 @@
+#!/usr/bin/python
+
+import sys
+sys.path[0:0] = [
+  '/home/posborne/Projects/discgolfhub/.buildout/parts/google_appengine',
+  ]
+
+
+import os
+
+def mkvar():
+  var = '/home/posborne/Projects/discgolfhub/.buildout/parts/discgolfhub_var'
+  if not os.path.exists(var):
+    os.mkdir(var)
+  return var
+os.environ['TMPDIR'] = mkvar()
+
+from dev_appserver import *
+
+
+
+import dev_appserver
+
+if __name__ == '__main__':
+    sys.exit(dev_appserver._run_file('/home/posborne/Projects/discgolfhub/.buildout/parts/google_appengine/dev_appserver.py', locals()))
